@@ -1,5 +1,5 @@
 /** Textual markov chain generator. */
-
+const text = process.argv[2];
 
 class MarkovMachine {
 
@@ -27,7 +27,17 @@ class MarkovMachine {
    * */
 
   getChains() {
-    // TODO: implement this!
+    const wordMap = {}
+    for (let i=0; i < this.words.length; i++){
+      let currentWord = this.words[i];
+      let nextWord = this.words[i+1] === undefined ? null : this.words[i+1];
+      if (wordMap[currentWord] === undefined){
+        wordMap[currentWord] = [nextWord];
+      } else {
+        wordMap[currentWord].push(nextWord);
+      }
+    }
+    return wordMap;
   }
 
 
@@ -36,9 +46,28 @@ class MarkovMachine {
 
   getText() {
     // TODO: implement this!
+    let currentWord = this.words[0];
+    let text = [currentWord];
+    let nextWordList = []
+    let nextWordNumChoices;
+    let nextWordIdx;
+    let nextWord;
+
+    while (nextWord !== null){
+      nextWordList = this.chains[currentWord];
+      nextWordNumChoices = nextWordList.length;
+      nextWordIdx = Math.floor(Math.random() * nextWordNumChoices);
+      nextWord = nextWordList[nextWordIdx];
+      text.push(nextWord);
+      currentWord = nextWord;
+    }
+
+    return text.join(' ');
 
     // - start at the first word in the input text
     // - find a random word from the following-words of that
     // - repeat until reaching the terminal null
   }
 }
+
+module.exports = {MarkovMachine:MarkovMachine}
