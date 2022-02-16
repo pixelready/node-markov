@@ -1,5 +1,7 @@
 /** Textual markov chain generator. */
-const text = process.argv[2];
+// const text = process.argv[2];
+const fsP = require("fs/promises");
+
 
 class MarkovMachine {
 
@@ -28,10 +30,10 @@ class MarkovMachine {
 
   getChains() {
     const wordMap = {}
-    for (let i=0; i < this.words.length; i++){
+    for (let i = 0; i < this.words.length; i++) {
       let currentWord = this.words[i];
-      let nextWord = this.words[i+1] === undefined ? null : this.words[i+1];
-      if (wordMap[currentWord] === undefined){
+      let nextWord = this.words[i + 1] === undefined ? null : this.words[i + 1];
+      if (wordMap[currentWord] === undefined) {
         wordMap[currentWord] = [nextWord];
       } else {
         wordMap[currentWord].push(nextWord);
@@ -53,7 +55,7 @@ class MarkovMachine {
     let nextWordIdx;
     let nextWord;
 
-    while (nextWord !== null){
+    while (nextWord !== null) {
       nextWordList = this.chains[currentWord];
       nextWordNumChoices = nextWordList.length;
       nextWordIdx = Math.floor(Math.random() * nextWordNumChoices);
@@ -70,4 +72,11 @@ class MarkovMachine {
   }
 }
 
-module.exports = {MarkovMachine:MarkovMachine}
+
+let newMarkov = new MarkovMachine("Four score and seven years ago our fathers brought forth on this continent");
+console.log('newMarkov.chains', newMarkov.chains);
+console.log('newMarkov.getText', newMarkov.getText());
+
+
+
+module.exports = { MarkovMachine: MarkovMachine }
