@@ -71,9 +71,40 @@ class MarkovMachine {
   }
 }
 
+class markovBigram extends MarkovMachine {
+  getChains() {
+    const wordMap = {};
+
+    for (let i = 0; i < this.words.length; i++) {
+      let currentWord = this.words[i];
+      let nextWord = this.words[i + 1] === undefined
+        ? null
+        : this.words[i + 1];
+      let nextNextWord = this.words[i + 2];
+      let currentBigram = currentWord + " " + nextWord;
+
+      let nextBigram = nextWord + " " + nextNextWord;
+
+      if (wordMap[currentBigram] === undefined) {
+        wordMap[currentBigram] = [nextNextWord];
+      } else {
+        wordMap[currentBigram].push(nextNextWord);
+      }
+    }
+    return wordMap;
+  }
+}
+
+
+
 let newMarkov = new MarkovMachine("a guy did a thing well");
 console.log("newMarkov.chains", newMarkov.chains);
 console.log("newMarkov.getText", newMarkov.getText());
+
+let newMarkovBigram = new markovBigram("a guy did a thing well");
+console.log("bigram.getchains", newMarkovBigram.chains);
+
+
 
 module.exports = {
   MarkovMachine: MarkovMachine
